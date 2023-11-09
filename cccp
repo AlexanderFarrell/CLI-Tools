@@ -1,0 +1,56 @@
+#! python3
+
+import sys
+
+
+def generate(name):
+    #print(f"Created file {name}")
+    snake = name
+    pascal = name.replace("_", " ").title().replace(" ", "")
+    screaming_snake = snake.upper()
+    header = f'''// {pascal}: 
+    
+#ifndef {screaming_snake}_H
+#define {screaming_snake}_H
+
+class {pascal} {{
+private:
+\t
+public:
+    {pascal}();
+    ~{pascal}();
+}};
+
+#endif //{screaming_snake}_H'''
+
+    impl = f'''#include "{snake}.h"
+
+{pascal}::{pascal}() {{
+    
+}}
+
+{pascal}::~{pascal}() {{
+
+}}
+'''
+
+    h = open(f"{snake}.h", 'x')
+    h.write(header)
+    h.close()
+
+    im = open(f"{snake}.cpp", 'x')
+    im.write(impl)
+    im.close()
+
+
+if len(sys.argv) < 2:
+    print("Please enter a name of the class to create")
+    exit(1)
+
+classes = []
+for i in range(1, len(sys.argv)):
+    #print(i)
+    classes.append(sys.argv[i])
+
+for c in classes:
+    generate(c)
